@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.design.mapper.PlanDao">
+	
+	<select id="queryTotalCount" resultType="integer">
+		select count(*) from plan
+		<if test="params!=null">
+			<if test="params.searchName!=null and params.searchName!=''">
+				where plan_name like "%${params.searchName}%"
+			</if>
+		</if>
+	</select>
+	
+	<select id="queryPage" parameterType="page" resultType="plan">
+		select * from plan
+		order by group_id
+		limit #{index},#{currentCount} 
+	</select>
+	
+	<insert id="planAdd" parameterType="plan">
+		insert into plan 
+		(plan_date,time,place,group_id) 
+		values
+		(#{plan_date},#{time},#{place},#{group_id})
+	</insert>
+	
+	<delete id="deletePlan">
+		delete from plan where 
+		plan_id = #{index}
+	</delete>
+	
+	<update id="setPlan" parameterType="plan">
+		update plan set
+		time = #{time},
+		place = #{place},
+		plan_date= #{plan_date}
+		where 
+		plan_id = #{plan_id}
+	</update>
+	
+	<select id="getAllPlan" resultType="plan">
+		select * from plan
+	</select>
+	
+	<select id="getPlanByid" resultType="plan">
+		select * from plan where 
+		plan_id = #{index} 
+	</select>
+	
+	<select id="getPlanByGroupId" resultType="plan">
+		select * from plan where 
+		group_id = #{index} 
+	</select>
+	
+</mapper>

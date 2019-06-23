@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.design.mapper.StudentDao">
+	
+	<select id="getStudentByNumber" resultType="student">
+		select * from student where
+		student_number = #{index}
+	</select>
+	
+	<select id="queryTotalCount" resultType="integer">
+		select count(*) from student
+		<if test="params!=null">
+			<if test="params.searchName!=null and params.searchName!=''">
+				where student_name like "%${params.searchName}%"
+			</if>
+		</if>
+	</select>
+	
+	<select id="queryPage" parameterType="page" resultType="student">
+		select * from student
+		<if test="params!=null">
+			<if test="params.searchName!=null and params.searchName!=''">
+				where student_name like "%${params.searchName}%"
+			</if>
+		</if>
+		 limit #{index},#{currentCount}
+	</select>
+	
+	<insert id="studentAdd" parameterType="student">
+		insert into student 
+		(student_number,student_name,gender,profession) 
+		values
+		(#{student_number},#{student_name},#{gender},#{profession})
+	</insert>
+	
+	<delete id="deleteStudent">
+		delete from student where 
+		student_number = #{index}
+	</delete>
+	
+	<update id="setStudent" parameterType="student">
+		update student set
+		student_name = #{student_name},
+		gender = #{gender},
+		profession = #{profession},
+		teacher_number = #{teacher_number} 
+		where 
+		student_number = #{student_number}
+	</update>
+	
+	<select id="getStudentByGroupId" resultType="student">
+		select * from student where
+		group_id = #{index}
+	</select>
+	
+	<update id="editStudentPasswordByNumber" parameterType="student">
+		update student set 
+		password = #{password} where
+		student_number = #{student_number}
+	</update>
+	
+	<update id="updateStudentTopic_id" parameterType="student">
+		update student set
+		topic_id = #{topic_id} where
+		student_id = #{student_id}
+	</update>
+	
+	<update id="updateStudentGroup_id" parameterType="student">
+		update student set
+		group_id = #{group_id} where
+		student_id = #{student_id}
+	</update>
+	
+	<update id="updateStudentTeacher_number" parameterType="student">
+		update student set
+		teacher_number = #{teacher_number} where
+		student_id = #{student_id}
+	</update>
+	
+</mapper>

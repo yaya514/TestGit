@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.design.mapper.AdminDao">
+	
+	<select id="getAdminByNumber" resultType="admin">
+		select * from admin where
+		number = #{index}
+	</select>
+	
+	<update id="editAdminPasswordByNumber" parameterType="admin">
+		update admin set
+		password = #{password} where
+		number = #{number}
+	</update>
+</mapper>

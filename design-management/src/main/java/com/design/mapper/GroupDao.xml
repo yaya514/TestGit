@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.design.mapper.GroupDao">
+	
+	<select id="queryTotalCount" resultType="integer">
+		select count(*) from mygroup
+		<if test="params!=null">
+			<if test="params.searchName!=null and params.searchName!=''">
+				where group_name like "%${params.searchName}%"
+			</if>
+		</if>
+	</select>
+	
+	<select id="queryPage" parameterType="page" resultType="mygroup">
+		select * from mygroup
+		<if test="params!=null">
+			<if test="params.searchName!=null and params.searchName!=''">
+				where group_name like "%${params.searchName}%"
+			</if>
+		</if>
+		 limit #{index},#{currentCount}
+	</select>
+	
+	<select id="getGroupByName" resultType="mygroup">
+		select * from mygroup where
+		group_name = #{index}
+	</select>
+	
+	<insert id="groupAdd" parameterType="mygroup">
+		insert into mygroup set
+		group_name = #{group_name},
+		plan_id = 0
+	</insert>
+	
+	<delete id="groupDelete">
+		delete  from mygroup where 
+		group_id = #{index}
+	</delete>
+	
+	<select id="getGroupById" resultType="mygroup">
+		select * from mygroup where 
+		group_id = #{index}
+	</select>
+	
+	<select id="getAllGroup" resultType="mygroup">
+		select * from mygroup where 
+		plan_id = 0
+	</select>
+	
+	<update id="groupUPdate" parameterType="mygroup">
+		update mygroup set 
+		group_name = #{group_name},
+		plan_id = #{plan_id}
+		where 
+		group_id = #{group_id}
+	</update>
+	
+	<update id="groupSetPlanidNull">
+		update mygroup set 
+		plan_id = 0 where
+		group_id = #{index}
+	</update>
+</mapper>
